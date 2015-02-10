@@ -1480,6 +1480,11 @@ extern zbar_color_t zbar_scanner_get_color(const zbar_scanner_t *scanner);
 
 /*@}*/
 
+ /** 
+ * cancel process.
+ */
+extern int zbar_processor_cancel(zbar_processor_t *processor);
+
 #ifdef __cplusplus
     }
 }

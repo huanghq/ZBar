@@ -185,6 +185,24 @@ int _zbar_processor_handle_input (zbar_processor_t *proc,
     return(input);
 }
 
+// cancel process
+int zbar_processor_cancel (zbar_processor_t *proc)
+{
+    int event = EVENT_INPUT;
+    event |= EVENT_CANCELED;
+
+    proc->input = EVENT_CANCELED;
+    
+    _zbar_mutex_lock(&proc->mutex);
+    if(proc->visible && proc->streaming)
+        /* also cancel outstanding output waiters */
+        event |= EVENT_OUTPUT;
+    _zbar_processor_notify(proc, event);
+    _zbar_mutex_unlock(&proc->mutex);
+
+    return EVENT_CANCELED;
+}
+
 #ifdef ZTHREAD
 
 static ZTHREAD proc_video_thread (void *arg)

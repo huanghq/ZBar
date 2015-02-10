@@ -298,6 +298,14 @@ processor_process_one (zbarProcessor *self,
 }
 
 static PyObject*
+processor_cancel_process (zbarProcessor *self)
+{
+    int rc;
+    rc = zbar_processor_cancel(self->zproc);
+    return(PyInt_FromLong(rc));
+}
+
+static PyObject*
 processor_process_image (zbarProcessor *self,
                          PyObject *args,
                          PyObject *kwds)
@@ -411,6 +419,8 @@ static PyMethodDef processor_methods[] = {
       METH_VARARGS | METH_KEYWORDS, },
     { "user_wait",        (PyCFunction)processor_user_wait,
       METH_VARARGS | METH_KEYWORDS, },
+    { "cancel_process",      (PyCFunction)processor_cancel_process,
+      METH_NOARGS, },
     { "process_one",      (PyCFunction)processor_process_one,
       METH_VARARGS | METH_KEYWORDS, },
     { "process_image",    (PyCFunction)processor_process_image,
